@@ -12,11 +12,20 @@ shuffle the arr and create / removve table with data from the arr*/
 function onClick() {
     document.getElementById("shuffle").addEventListener("click",shuffle(cases));
  }
+ function moveClick(){
+    document.getElementById("jeu").addEventListener("click", move(cases));
+
+ }
+
+ function move(arr) {
+     console.log('yo')
+ }
 
  function shuffle(arr) {
     let counter = arr.length;
     while (counter > 0) {
         let i = Math.floor(Math.random() * counter);
+        /* decrement counter to only have numbers one time */
         counter--;
         /*this is a swap */
         let temp = arr[counter];
