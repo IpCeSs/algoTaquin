@@ -48,18 +48,18 @@ function onClick() {
 */
 function difficultyLevel(arr){
     let level = 0;
+    /* compares cases to evalute level difficulty */
     for (let i = 0; i < arr.length-1; i++) {
-        for (let j = i + 1; j <= arr.length; j++) {
+        for (let j = i + 1; j < arr.length; j++) {
             
-            if (arr[i] < arr[j]) {
-                j++;
-            } else {
-                level++;
-                j++
+            if (arr[i] > arr[j] && arr[j] !== "" && arr[i] !== "") { 
+                level++; 
             } 
         }
     }
     console.log(level)
+    
+    /**evaluates if even or odd */
     if (level % 2 === 0) {
         difficulty = true
         return difficulty;
@@ -70,6 +70,7 @@ function difficultyLevel(arr){
     
 }
 
+/*To create table with taquin numbers */
 function createHtmlTable(arr) {
   for( let i = 0 ; i < arr.length ; i++) {
       if(i % 3 === 0) {
@@ -83,21 +84,23 @@ function createHtmlTable(arr) {
   return tableExists;
 }
 
+/*To remove not doable taquin message */
 function removeBadTaquin(){
     document.getElementById("main").innerHTML = "";
 }
 
+/*To remove table before displaying the newly generated one */
 function removeTable()
    {
        table.innerHTML = "";
    }
 
+/* To display a message if taquin is not doable */
 function badTaquin() {
 var H2 = document.createElement("H2");
 H2.style.background = 'grey';
 H2.style.color = "white";
 H2.innerHTML = "Shuffle again ! No solution for generated taquin";
-
 document.getElementById("main").appendChild(H2);
 }
 
