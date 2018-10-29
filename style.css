@@ -1,0 +1,18 @@
+#jeu {
+ 
+    /* height: 20%; */
+    margin-left: 42%;
+    margin-top: 5%;
+    border: 1px solid black;
+
+  }
+  td {
+    width: 100px;
+    height: 100px;
+    font-size: 56px;
+    vertical-align: middle;
+    border: 1px solid black;
+  }
+  
+  
+ 
