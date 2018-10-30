@@ -1,31 +1,66 @@
-let cases = [1, 2, 3, 4, 5, 6, 7, 8, ""];
+$( document ).ready(function() {
+    createHtmlTable(cells)
+    initialPosition = true
+});
+let cells = [1, 2, 3, 4, 5, 6, 7, 8, ""];
 /* Get the empty table element that exists in html file */
 let table = document.getElementById("jeu");
 let row;
-/* tableExists is used to check if a table already exists with values*/
-let tableExists = false;
-
+let selectedCell;
 let difficulty;
+let offLimits;
+let initialPosition;
 
 /* clicking the button with 'shuffle' id will trigger all events above, 
 shuffle the arr and create / removve table with data from the arr*/
-function onClick() {
-    document.getElementById("shuffle").addEventListener("click",shuffle(cases));
+function shuffleClick() {
+    shuffle(cells);
+    initialPosition = false 
+    
  }
  function moveClick(){
-    document.getElementById("jeu").addEventListener("click", move(cases));
+    if (difficulty) {
+       let target = event.target; //where was the click
+        if (target.tagName !== 'TD') return; // not on TD? Then we're not interested
+        
+        move(target);
+        removeTable()
+        createHtmlTable(cells)
+      
+    } else {
+        alert('This taquin is not solvable, shuffle again !')
+    }
 
  }
 
- function move(arr) {
-     console.log('yo')
- }
+ function move(td) {
+    let emptyCell = parseInt(document.getElementsByClassName('empty')[0].id);
+    selectedCell = parseInt(td.id);
+    let rows = document.getElementById("jeu").rows;
+       
+    if (selectedCell != emptyCell +1 && selectedCell != emptyCell-1 && selectedCell != emptyCell + 3 && selectedCell != emptyCell - 3) {
+        
+        removeMessage();
+        notAuthorizedMove();
+    } else if( rows[0].cells[0] === rows[0]) {
+        
+    }else {
+        removeMessage();
+        let temp = cells[selectedCell];
+        console.log('temp '+temp)
+        cells[selectedCell] = cells[emptyCell];
+        cells[emptyCell] = temp;
+
+    }
+    return cells;
+  }
 
  function shuffle(arr) {
     let counter = arr.length;
     while (counter > 0) {
         let i = Math.floor(Math.random() * counter);
-        /* decrement counter to only have numbers one time */
+        /* decrement counter to only have numbers one time, once an index is 
+        taken into account it is 'removed' */
         counter--;
         /*this is a swap */
         let temp = arr[counter];
@@ -37,12 +72,12 @@ function onClick() {
         difficultyLevel(arr);
 
         /**removes badTaquin message if exists */
-        removeBadTaquin()
+        removeMessage()
         /**removes table  if exists */
         removeTable();
         
         if (difficulty) {
-                createHtmlTable(arr);
+            createHtmlTable(arr);
         } else {
             badTaquin()
             createHtmlTable(arr);
@@ -86,15 +121,26 @@ function createHtmlTable(arr) {
           
         row = table.insertRow();
       }
-       let cellule = row.insertCell();
-       cellule.innerHTML = arr[i];
+      if (arr[i] !== "") {
+        let cellule = row.insertCell();
+        cellule.innerHTML = arr[i];
+        cellule.value = arr[i]
+        /* gives td an id matching  i (0 to 8) */
+        cellule.id = i;
+      } else {
+        let cellule = row.insertCell();
+        cellule.innerHTML = arr[i];
+        cellule.value = arr[i];
+        /* gives td an id matching  i (0 to 8) */
+        cellule.id = i; 
+        cellule.className = 'empty';
+      }
   }
-  tableExists = true;
-  return tableExists;
+
 }
 
-/*To remove not doable taquin message */
-function removeBadTaquin(){
+/*To remove error messages */
+function removeMessage(){
     document.getElementById("main").innerHTML = "";
 }
 
@@ -111,6 +157,15 @@ H2.style.background = 'grey';
 H2.style.color = "white";
 H2.innerHTML = "Shuffle again ! No solution for generated taquin";
 document.getElementById("main").appendChild(H2);
+}
+
+
+function notAuthorizedMove() {
+    var H2no = document.createElement("H2");
+    H2no.style.background = 'grey';
+    H2no.style.color = "white";
+    H2no.innerHTML = "This move is not authorized. You can only move UP/DOWN or LEFT/RIGHT.";
+    document.getElementById("main").appendChild(H2no);
 }
 
 
