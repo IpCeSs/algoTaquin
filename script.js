@@ -8,7 +8,6 @@ let table = document.getElementById("jeu");
 let row;
 let selectedCell;
 let difficulty;
-let offLimits;
 
 /* clicking the button with 'shuffle' id will trigger all events above, 
 shuffle the arr and create / removve table with data from the arr*/
@@ -42,6 +41,7 @@ function moveClick() {
 
     } else {
         alert('This taquin is not solvable, shuffle again !')
+        shuffle(cells)
     }
 
 }
@@ -167,6 +167,7 @@ function createHtmlTable(arr) {
             let cellule = row.insertCell();
             cellule.innerHTML = arr[i];
             cellule.value = arr[i];
+            cellule.style = "background-color:lightgrey";
             /* gives td an id matching  i (0 to 8) */
             cellule.id = i;
             cellule.className = 'empty';
