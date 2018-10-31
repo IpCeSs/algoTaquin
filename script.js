@@ -1,31 +1,42 @@
 $( document ).ready(function() {
-    createHtmlTable(cells)
-    initialPosition = true
+    createHtmlTable(initialCells)
 });
-let cells = [1, 2, 3, 4, 5, 6, 7, 8, ""];
+let initialCells = [1, 2, 3, 4, 5, 6, 7, 8, ""];
+let cells = [1, 7, 3, 4, 5, 6, 2, 8, ""];
 /* Get the empty table element that exists in html file */
 let table = document.getElementById("jeu");
 let row;
 let selectedCell;
 let difficulty;
 let offLimits;
-let initialPosition;
 
 /* clicking the button with 'shuffle' id will trigger all events above, 
 shuffle the arr and create / removve table with data from the arr*/
 function shuffleClick() {
     shuffle(cells);
-    initialPosition = false 
-    
- }
- function moveClick(){
+}
+function resolveClick() {
+    console.log(difficulty)
+    while (initialCells !== cells) {
+        moveClick();
+    }
+}
+function moveClick(){
     if (difficulty) {
-       let target = event.target; //where was the click
+        let target = event.target; //where was the click
+        let emptyCell = parseInt(document.getElementsByClassName('empty')[0].id);
+        let autoTarget = emptyCell - 1;
+       
         if (target.tagName !== 'TD') return; // not on TD? Then we're not interested
-        
-        move(target);
-        removeTable()
-        createHtmlTable(cells)
+        if (target) {
+            move(target);
+            removeTable()
+            createHtmlTable(cells)
+        } else {
+            move(autoTarget);
+            removeTable()
+            createHtmlTable(cells)
+        }
       
     } else {
         alert('This taquin is not solvable, shuffle again !')
@@ -33,12 +44,42 @@ function shuffleClick() {
 
  }
 
- function move(td) {
+function move(td) {
     let emptyCell = parseInt(document.getElementsByClassName('empty')[0].id);
     selectedCell = parseInt(td.id);
     let rows = document.getElementById("jeu").rows;
+    let diagonal = false;
+   
+            
+    if (selectedCell === 2 && emptyCell === 3 ||
+        selectedCell === 5 && emptyCell === 6 ||
+        selectedCell === 3 && emptyCell === 2 ||
+        selectedCell === 6 && emptyCell === 5 ||
+        selectedCell === 0 && emptyCell === 8 ||
+        selectedCell === 8 && emptyCell === 0 ||
+        selectedCell === 0 && emptyCell === 4 ||
+        selectedCell === 4 && emptyCell === 0 ||
+        selectedCell === 2 && emptyCell === 4 ||
+        selectedCell === 4 && emptyCell === 2 ||
+        selectedCell === 1 && emptyCell === 3 ||
+        selectedCell === 3 && emptyCell === 1 ||
+        selectedCell === 1 && emptyCell === 5 ||
+        selectedCell === 5 && emptyCell === 1 ||
+        selectedCell === 3 && emptyCell === 7 ||
+        selectedCell === 7 && emptyCell === 3 ||
+        selectedCell === 4 && emptyCell === 6 ||
+        selectedCell === 6 && emptyCell === 4 ||
+        selectedCell === 4 && emptyCell === 8 ||
+        selectedCell === 8 && emptyCell === 4 ||
+        selectedCell === 7 && emptyCell === 5 ||
+        selectedCell === 5 && emptyCell === 7 
+        ) {
+    
+        diagonal === true
+        return diagonal;
+    }
        
-    if (selectedCell != emptyCell +1 && selectedCell != emptyCell-1 && selectedCell != emptyCell + 3 && selectedCell != emptyCell - 3) {
+    if (selectedCell != emptyCell +1 && selectedCell != emptyCell-1 && selectedCell != emptyCell + 3 && selectedCell != emptyCell - 3 && diagonal) {
         
         removeMessage();
         notAuthorizedMove();
@@ -47,7 +88,6 @@ function shuffleClick() {
     }else {
         removeMessage();
         let temp = cells[selectedCell];
-        console.log('temp '+temp)
         cells[selectedCell] = cells[emptyCell];
         cells[emptyCell] = temp;
 
@@ -55,7 +95,7 @@ function shuffleClick() {
     return cells;
   }
 
- function shuffle(arr) {
+function shuffle(arr) {
     let counter = arr.length;
     while (counter > 0) {
         let i = Math.floor(Math.random() * counter);
@@ -152,12 +192,12 @@ function removeTable()
 
 /* To display a message if taquin is not doable */
 function badTaquin() {
-var H2 = document.createElement("H2");
-H2.style.background = 'grey';
-H2.style.color = "white";
-H2.innerHTML = "Shuffle again ! No solution for generated taquin";
-document.getElementById("main").appendChild(H2);
-}
+    var H2 = document.createElement("H2");
+    H2.style.background = 'grey';
+    H2.style.color = "white";
+    H2.innerHTML = "Shuffle again ! No solution for generated taquin";
+    document.getElementById("main").appendChild(H2);
+    }
 
 
 function notAuthorizedMove() {
@@ -167,6 +207,8 @@ function notAuthorizedMove() {
     H2no.innerHTML = "This move is not authorized. You can only move UP/DOWN or LEFT/RIGHT.";
     document.getElementById("main").appendChild(H2no);
 }
+
+
 
 
 
