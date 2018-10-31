@@ -79,7 +79,7 @@ function move(td) {
         return diagonal;
     }
 
-
+    
     if (selectedCell != emptyCell + 1 && selectedCell != emptyCell - 1 && selectedCell != emptyCell + 3 && selectedCell != emptyCell - 3 || diagonal) {
 
     } else {
