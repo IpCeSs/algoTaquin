@@ -8,7 +8,7 @@ let table = document.getElementById("jeu");
 let row;
 let selectedCell;
 let difficulty;
-
+let offLimits;
 
 /* clicking the button with 'shuffle' id will trigger all events above, 
 shuffle the arr and create / removve table with data from the arr*/
@@ -50,29 +50,7 @@ function move(td) {
     let emptyCell = parseInt(document.getElementsByClassName('empty')[0].id);
     selectedCell = parseInt(td.id);
     let diagonal = false;
-    let jumpCases = false;
 
-    blockCasesJump(emptyCell, selectedCell)
-    blockDiagonals(emptyCell, selectedCell)
-
-
-    if (!jumpCases || !diagonal) {
-        let temp = cells[selectedCell];
-        cells[selectedCell] = cells[emptyCell];
-        cells[emptyCell] = temp;
-    } 
-    
-    return cells;
-}
-
-function blockCasesJump(emptyCell, selectedCell) {
-    if (selectedCell != emptyCell + 1 && selectedCell != emptyCell - 1 && selectedCell != emptyCell + 3 && selectedCell != emptyCell - 3) {
-        jumpCases === true
-        return jumpCases;
-    }
-}
-
-function blockDiagonals(emptyCell, selectedCell) {
     if (selectedCell === 2 && emptyCell === 3 ||
         selectedCell === 5 && emptyCell === 6 ||
         selectedCell === 3 && emptyCell === 2 ||
@@ -100,7 +78,20 @@ function blockDiagonals(emptyCell, selectedCell) {
         diagonal === true
         return diagonal;
     }
+
+
+    if (selectedCell != emptyCell + 1 && selectedCell != emptyCell - 1 && selectedCell != emptyCell + 3 && selectedCell != emptyCell - 3 || diagonal) {
+
+    } else {
+        let temp = cells[selectedCell];
+        cells[selectedCell] = cells[emptyCell];
+        cells[emptyCell] = temp;
+
+    }
+    return cells;
 }
+
+
 
 function shuffle(arr) {
     let counter = arr.length;
